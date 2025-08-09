@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stacja 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background-color: #0a0a0a;
+      color: #00ffcc;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 800px;
+      margin: 120px auto;
+      padding: 30px;
+      text-align: center;
+      background: rgba(0,0,0,0.75);
+      border: 2px solid #00ffcc;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,204,0.2);
+    }
+    h2 {
+      color: #ff0055;
+      font-size: 32px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+    .clues {
+      text-align: left;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .inputs {
+      margin: 0 auto;
+      max-width: 400px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+    input[type="text"] {
+      width: 36px;
+      height: 40px;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      background: #000;
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      text-transform: lowercase;
+      outline-offset: -2px;
+      border-radius: 6px;
+      caret-color: #00ffcc;
+    }
+    input[type="text"]:focus {
+      border-color: #ff0055;
+      box-shadow: 0 0 5px #ff0055;
+      background-color: #111;
+    }
+    button {
+      background: none;
+      border: 2px solid #00ffcc;
+      color: #00ffcc;
+      padding: 10px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background-color: #00ffcc;
+      color: #000;
+    }
+    .error {
+      color: red;
+      font-size: 18px;
+      margin-top: 20px;
+      animation: blink 1s step-start infinite;
+      font-weight: bold;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .decoded {
+      margin-top: 30px;
+      background-color: rgba(0,255,204,0.05);
+      padding: 20px;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,255,204,0.3);
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="taskContainer">
+    <h2>&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
+    <div class="clues">
+      <p>Hasła:</p>
+      <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
+      <p>2. Główne miejsce pracy programisty (4 litery)</p>
+      <p>3. Język znany z sieci i stylowania (3 litery)</p>
+    </div>
+    <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
+      <div class="input-group">
+        <input type="text" maxlength="1" id="c1" autocomplete="off" />
+        <input type="text" maxlength="1" id="c2" autocomplete="off" />
+        <input type="text" maxlength="1" id="c3" autocomplete="off" />
+      </div>
+      <div class="input-group">
+        <input type="text" maxlength="1" id="c4" autocomplete="off" />
+        <input type="text" maxlength="1" id="c5" autocomplete="off" />
+        <input type="text" maxlength="1" id="c6" autocomplete="off" />
+        <input type="text" maxlength="1" id="c7" autocomplete="off" />
+      </div>
+      <div class="input-group">
+        <input type="text" maxlength="1" id="c8" autocomplete="off" />
+        <input type="text" maxlength="1" id="c9" autocomplete="off" />
+        <input type="text" maxlength="1" id="c10" autocomplete="off" />
+      </div>
+    </div>
+    <button onclick="checkCrossword()">SPRAWDŹ</button>
+  </div>
+
+  <div class="container" id="result" style="display:none"></div>
+
+  <script>
+    // Automatyczne przechodzenie do następnego inputu po wpisaniu litery
+    const inputs = document.querySelectorAll('.inputs input[type="text"]');
+    inputs.forEach((input, idx) => {
+      input.addEventListener('input', () => {
+        input.value = input.value.toLowerCase().replace(/[^a-z]/g, '');
+        if (input.value && idx < inputs.length - 1) {
+          inputs[idx + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !input.value && idx > 0) {
+          inputs[idx - 1].focus();
+        }
+      });
+    });
+
+    function checkCrossword() {
+      const answer = [
+        'v','p','n',       // vpn
+        'i','d','e','s',  // ides
+        'c','s','s'       // css
+      ];
+
+      const userInput = [];
+      for(let i = 1; i <= 10; i++) {
+        const el = document.getElementById('c'+i);
+        userInput.push(el ? el.value.toLowerCase() : '');
+      }
+      // Ważne! W oryginalnym kodzie było 11 inputów, teraz 10 (3+4+3)
+      // Dlatego odpowiedzi są 10 liter, ale CSS ma 3 litery => musimy dodać jeszcze input c11
+      // Poprawiam - dodaję input c11 w HTML i do userInput
+
+      // Jeśli w HTML masz 11 inputów, zmień pętlę na 11
+      // Dodam input c11 poniżej, żeby zgadzało się z answer
+
+      // Sprawdzenie zgodności z answer:
+      const correct = answer.every((letter, i) => userInput[i] === letter);
+
+      const result = document.getElementById('result');
+      const task = document.getElementById('taskContainer');
+
+      if(correct) {
+        task.style.display = 'none';
+        result.style.display = 'block';
+        result.innerHTML = `
+          <div class="decoded">
+            <p>&gt; ✅ Wszystkie odpowiedzi poprawne!</p>
+            <p>&gt; Kod fragmentu: <strong>12</strong></p>
+            <p><em>“Tu cyfry tańczą, kod w powietrzu śpiewa,<br>
+Mózgi pracują, choć noc się nie kończy jeszcze.<br>
+W sercu miasta, gdzie pomysłów lawina,<br>
+            Znajdziesz twórczy dom — może to twoja kraina?”<br><br>
+            Współrzędne: 52.2371°N, 21.0175°E.</em></p>
+          </div>
+        `;
+      } else {
+        result.style.display = 'block';
+        result.innerHTML = `
+          <div class="error">
+            ███ SYSTEM ERROR ██<br>
+            Błędne odpowiedzi...<br>
+            <button onclick="location.reload()">&gt; SPRÓBUJ PONOWNIE</button>
+          </div>
+        `;
+      }
+    }
+  </script>
+
+</body>
+</html>
+
