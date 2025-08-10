@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Stacja 3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     html, body {
@@ -15,9 +16,9 @@
       position: relative;
     }
     .container {
-      max-width: 800px;
-      margin: 120px auto 60px;
-      padding: 30px;
+      max-width: 600px;
+      margin: 100px auto 60px;
+      padding: 30px 25px;
       text-align: center;
       background: rgba(0,0,0,0.75);
       border: 2px solid #00ffcc;
@@ -28,45 +29,48 @@
     }
     h2 {
       color: #ff0055;
-      font-size: 32px;
+      font-size: 28px;
       margin-bottom: 30px;
       font-weight: bold;
+      line-height: 1.2;
     }
     .clues {
       text-align: left;
       font-weight: bold;
-      margin-bottom: 20px;
-      font-size: 20px;
-      line-height: 1.3;
+      margin-bottom: 25px;
+      font-size: 18px;
+      line-height: 1.4;
     }
     .inputs {
-      margin: 0 auto 20px;
-      max-width: 420px;
+      margin: 0 auto 25px;
+      max-width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 22px;
       align-items: flex-start;
     }
     .input-group {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      width: 100%;
     }
     .clue-number {
       color: #ff0055;
       font-weight: bold;
-      font-size: 24px;
+      font-size: 28px;
       line-height: 40px;
       user-select: none;
-      min-width: 28px;
+      min-width: 32px;
       text-align: right;
       display: inline-block;
-      margin-right: 12px;
+      margin-right: 10px;
+      flex-shrink: 0;
     }
     input[type="text"] {
-      width: 36px;
-      height: 40px;
-      font-size: 24px;
+      width: 48px;
+      height: 48px;
+      font-size: 28px;
       font-weight: bold;
       text-align: center;
       background: #000;
@@ -74,64 +78,68 @@
       color: #00ffcc;
       text-transform: lowercase;
       outline-offset: -2px;
-      border-radius: 6px;
+      border-radius: 8px;
       caret-color: #00ffcc;
       transition: border-color 0.3s, background-color 0.3s;
+      flex-shrink: 0;
     }
     input[type="text"]:focus {
       border-color: #ff0055;
-      box-shadow: 0 0 5px #ff0055;
+      box-shadow: 0 0 8px #ff0055;
       background-color: #111;
     }
     input.correct {
       border-color: #00ff55 !important;
       background-color: #002200;
       color: #00ff55;
-      box-shadow: 0 0 8px #00ff55;
+      box-shadow: 0 0 10px #00ff55;
     }
     input.incorrect {
       border-color: #ff0033 !important;
       background-color: #330000;
       color: #ff0033;
-      box-shadow: 0 0 8px #ff0033;
+      box-shadow: 0 0 10px #ff0033;
     }
     button {
       background: none;
       border: 2px solid #00ffcc;
       color: #00ffcc;
-      padding: 10px 30px;
-      font-size: 18px;
+      padding: 14px 36px;
+      font-size: 20px;
       cursor: pointer;
-      margin-top: 10px;
+      margin-top: 12px;
       font-weight: bold;
       text-transform: uppercase;
-      border-radius: 6px;
+      border-radius: 10px;
       transition: background-color 0.3s, color 0.3s;
     }
-    button:hover {
+    button:hover, button:focus {
       background-color: #00ffcc;
       color: #000;
+      outline: none;
     }
     .error {
-      color: red;
-      font-size: 18px;
-      margin-top: 20px;
-      animation: blink 1s step-start infinite;
+      color: #ff3355;
+      font-size: 20px;
+      margin-top: 28px;
+      animation: blink 1.2s step-start infinite;
       font-weight: bold;
+      line-height: 1.3;
     }
     @keyframes blink {
       50% { opacity: 0; }
     }
     .decoded {
-      margin-top: 30px;
-      background-color: rgba(0,255,204,0.05);
-      padding: 20px;
+      margin-top: 32px;
+      background-color: rgba(0,255,204,0.07);
+      padding: 22px 28px;
       border: 1px solid #00ffcc;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,255,204,0.3);
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,255,204,0.35);
       font-size: 20px;
       font-weight: bold;
       text-align: left;
+      line-height: 1.5;
     }
 
     /* Tło animacji */
@@ -143,59 +151,74 @@
       background-color: #0a0a0a;
       overflow: hidden;
     }
-
     .dino {
       position: absolute;
-      font-size: 20px;
+      font-size: 22px;
       color: #00ffcc;
       user-select: none;
       will-change: transform;
       font-weight: bold;
       text-shadow:
-        0 0 5px #00ffcc,
-        0 0 10px #00ffcc;
+        0 0 6px #00ffcc,
+        0 0 12px #00ffcc;
     }
 
-    /* Mobile adjustments */
-    @media (max-width: 600px) {
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 480px) {
       .container {
-        margin: 80px 10px 40px;
-        padding: 20px;
-        border-radius: 8px;
+        margin: 60px 15px 40px;
+        padding: 22px 18px;
+        border-radius: 10px;
       }
       h2 {
-        font-size: 24px;
+        font-size: 22px;
+        margin-bottom: 24px;
       }
       .clues {
         font-size: 16px;
+        margin-bottom: 20px;
       }
       .inputs {
-        max-width: 100%;
+        gap: 18px;
       }
-      input[type="text"] {
-        width: 30px;
-        height: 36px;
-        font-size: 20px;
+      .input-group {
+        gap: 8px;
       }
       .clue-number {
-        font-size: 20px;
-        line-height: 36px;
-        min-width: 24px;
+        font-size: 24px;
+        min-width: 28px;
         margin-right: 8px;
+        line-height: 36px;
+      }
+      input[type="text"] {
+        width: 42px;
+        height: 42px;
+        font-size: 24px;
+        border-radius: 6px;
       }
       button {
-        font-size: 16px;
-        padding: 8px 20px;
+        font-size: 18px;
+        padding: 12px 28px;
+        border-radius: 8px;
+      }
+      .decoded {
+        font-size: 18px;
+        padding: 18px 20px;
+      }
+      .error {
+        font-size: 18px;
+        margin-top: 24px;
       }
     }
+
   </style>
 </head>
 <body>
 
   <div id="dinoBackground"></div>
 
-  <div class="container" id="taskContainer">
-    <h2>&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
+  <div class="container" id="taskContainer" role="main" aria-labelledby="mainTitle">
+    <h2 id="mainTitle">&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
     <div class="clues">
       <p>Hasła:</p>
       <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
@@ -204,27 +227,27 @@
     </div>
     <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
       <div class="input-group" role="group" aria-label="Pierwsze hasło, 3 litery">
-        <span class="clue-number">1.</span>
+        <span class="clue-number" aria-hidden="true">1.</span>
         <input type="text" maxlength="1" id="c1" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 1" />
         <input type="text" maxlength="1" id="c2" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 1" />
         <input type="text" maxlength="1" id="c3" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 1" />
       </div>
       <div class="input-group" role="group" aria-label="Drugie hasło, 2 litery">
-        <span class="clue-number">2.</span>
+        <span class="clue-number" aria-hidden="true">2.</span>
         <input type="text" maxlength="1" id="c4" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 2" />
         <input type="text" maxlength="1" id="c5" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 2" />
       </div>
       <div class="input-group" role="group" aria-label="Trzecie hasło, 3 litery">
-        <span class="clue-number">3.</span>
+        <span class="clue-number" aria-hidden="true">3.</span>
         <input type="text" maxlength="1" id="c6" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 3" />
         <input type="text" maxlength="1" id="c7" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 3" />
         <input type="text" maxlength="1" id="c8" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 3" />
       </div>
     </div>
-    <button onclick="checkCrossword()">SPRAWDŹ</button>
+    <button onclick="checkCrossword()" aria-describedby="buttonHelp">SPRAWDŹ</button>
   </div>
 
-  <div class="container" id="result" style="display:none"></div>
+  <div class="container" id="result" style="display:none" aria-live="polite" aria-atomic="true"></div>
 
   <script>
     // Automatyczne przechodzenie do następnego inputu po wpisaniu litery
@@ -296,11 +319,10 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
     }
 
     // Animacja spadających hacker-symboli w tle
-
     const dinoBackground = document.getElementById('dinoBackground');
     const hackerChars = ['?', '#', '$', '%', '&', '@', '!', '*']; // symbole hackerskie
     const dinos = [];
-    const dinoCount = 100;
+    const dinoCount = 80;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -310,8 +332,8 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
       constructor() {
         this.x = random(0, window.innerWidth);
         this.y = random(-window.innerHeight, 0);
-        this.speed = random(3, 5);
-        this.size = random(30, 50);
+        this.speed = random(2, 4);
+        this.size = random(24, 36);
         this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
         this.element = document.createElement('div');
         this.element.classList.add('dino');
@@ -326,8 +348,8 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
         if(this.y > window.innerHeight) {
           this.y = random(-100, -40);
           this.x = random(0, window.innerWidth);
-          this.speed = random(2, 3);
-          this.size = random(30);
+          this.speed = random(2, 4);
+          this.size = random(24, 36);
           this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
           this.element.style.fontSize = this.size + 'px';
           this.element.textContent = this.char;
@@ -347,7 +369,6 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
 
     animate();
 
-    // Reakcja na zmianę rozmiaru okna
     window.addEventListener('resize', () => {
       dinos.forEach(dino => {
         dino.x = random(0, window.innerWidth);
