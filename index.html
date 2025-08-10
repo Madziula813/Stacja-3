@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Stacja 3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     html, body {
@@ -13,10 +14,12 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     .container {
       max-width: 800px;
-      margin: 120px auto 60px;
+      margin: 100px auto 60px;
       padding: 30px;
       text-align: center;
       background: rgba(0,0,0,0.75);
@@ -25,12 +28,14 @@
       box-shadow: 0 0 20px rgba(0,255,204,0.2);
       position: relative;
       z-index: 2;
+      box-sizing: border-box;
     }
     h2 {
       color: #ff0055;
       font-size: 32px;
       margin-bottom: 30px;
       font-weight: bold;
+      line-height: 1.2;
     }
     .clues {
       text-align: left;
@@ -45,6 +50,7 @@
       display: flex;
       justify-content: center;
       gap: 16px;
+      flex-wrap: wrap;
     }
     .input-group {
       display: flex;
@@ -64,6 +70,7 @@
       border-radius: 6px;
       caret-color: #00ffcc;
       transition: border-color 0.3s, background-color 0.3s;
+      user-select: none;
     }
     input[type="text"]:focus {
       border-color: #ff0055;
@@ -94,10 +101,12 @@
       text-transform: uppercase;
       border-radius: 6px;
       transition: background-color 0.3s, color 0.3s;
+      user-select: none;
     }
-    button:hover {
+    button:hover, button:focus {
       background-color: #00ffcc;
       color: #000;
+      outline: none;
     }
     .error {
       color: red;
@@ -105,6 +114,7 @@
       margin-top: 20px;
       animation: blink 1s step-start infinite;
       font-weight: bold;
+      user-select: none;
     }
     @keyframes blink {
       50% { opacity: 0; }
@@ -119,6 +129,8 @@
       font-size: 20px;
       font-weight: bold;
       text-align: left;
+      user-select: text;
+      line-height: 1.4;
     }
 
     /* Tło animacji */
@@ -129,6 +141,7 @@
       pointer-events: none;
       background-color: #0a0a0a;
       overflow: hidden;
+      touch-action: none;
     }
 
     .dino {
@@ -141,12 +154,13 @@
       text-shadow:
         0 0 5px #00ffcc,
         0 0 10px #00ffcc;
+      pointer-events: none;
     }
 
     /* Mobile adjustments */
     @media (max-width: 600px) {
       .container {
-        margin: 80px 10px 40px;
+        margin: 60px 12px 40px;
         padding: 20px;
         border-radius: 8px;
       }
@@ -156,14 +170,26 @@
       .clues {
         font-size: 16px;
       }
+      .inputs {
+        max-width: 100%;
+        gap: 12px;
+        justify-content: center;
+      }
+      .input-group {
+        gap: 6px;
+      }
       input[type="text"] {
-        width: 30px;
+        width: 28px;
         height: 36px;
         font-size: 20px;
       }
       button {
         font-size: 16px;
         padding: 8px 20px;
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto 0;
+        display: block;
       }
     }
   </style>
@@ -172,7 +198,7 @@
 
   <div id="dinoBackground"></div>
 
-  <div class="container" id="taskContainer">
+  <div class="container" id="taskContainer" role="main" aria-label="Krzyżówka umysłowa - stacja 3">
     <h2>&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
     <div class="clues">
       <p>Hasła:</p>
@@ -181,25 +207,25 @@
       <p>3. Język znany z sieci i stylowania (3 litery)</p>
     </div>
     <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
-      <div class="input-group">
-        <input type="text" maxlength="1" id="c1" autocomplete="off" />
-        <input type="text" maxlength="1" id="c2" autocomplete="off" />
-        <input type="text" maxlength="1" id="c3" autocomplete="off" />
+      <div class="input-group" role="group" aria-label="Pierwsze hasło, 3 litery">
+        <input type="text" maxlength="1" id="c1" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 1" />
+        <input type="text" maxlength="1" id="c2" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 1" />
+        <input type="text" maxlength="1" id="c3" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 1" />
       </div>
-      <div class="input-group">
-        <input type="text" maxlength="1" id="c4" autocomplete="off" />
-        <input type="text" maxlength="1" id="c5" autocomplete="off" />
+      <div class="input-group" role="group" aria-label="Drugie hasło, 2 litery">
+        <input type="text" maxlength="1" id="c4" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 2" />
+        <input type="text" maxlength="1" id="c5" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 2" />
       </div>
-      <div class="input-group">
-        <input type="text" maxlength="1" id="c6" autocomplete="off" />
-        <input type="text" maxlength="1" id="c7" autocomplete="off" />
-        <input type="text" maxlength="1" id="c8" autocomplete="off" />
+      <div class="input-group" role="group" aria-label="Trzecie hasło, 3 litery">
+        <input type="text" maxlength="1" id="c6" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 3" />
+        <input type="text" maxlength="1" id="c7" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 3" />
+        <input type="text" maxlength="1" id="c8" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 3" />
       </div>
     </div>
-    <button onclick="checkCrossword()">SPRAWDŹ</button>
+    <button onclick="checkCrossword()" aria-label="Sprawdź odpowiedzi">SPRAWDŹ</button>
   </div>
 
-  <div class="container" id="result" style="display:none"></div>
+  <div class="container" id="result" style="display:none" role="region" aria-live="polite"></div>
 
   <script>
     // Automatyczne przechodzenie do następnego inputu po wpisaniu litery
@@ -261,10 +287,10 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
       } else {
         result.style.display = 'block';
         result.innerHTML = `
-          <div class="error">
+          <div class="error" role="alert">
             ███ SYSTEM ERROR ██<br>
             Błędne odpowiedzi...<br>
-            <button onclick="location.reload()">&gt; SPRÓBUJ PONOWNIE</button>
+            <button onclick="location.reload()" aria-label="Spróbuj ponownie">▶ SPRÓBUJ PONOWNIE</button>
           </div>
         `;
       }
@@ -275,7 +301,7 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
     const dinoBackground = document.getElementById('dinoBackground');
     const hackerChars = ['?', '#', '$', '%', '&', '@', '!', '*']; // symbole hackerskie
     const dinos = [];
-    const dinoCount = 100;
+    const dinoCount = 80;
 
     function random(min, max) {
       return Math.random() * (max - min) + min;
@@ -286,7 +312,7 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
         this.x = random(0, window.innerWidth);
         this.y = random(-window.innerHeight, 0);
         this.speed = random(3, 5);
-        this.size = random(30, 50);
+        this.size = random(20, 30);
         this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
         this.element = document.createElement('div');
         this.element.classList.add('dino');
@@ -302,7 +328,7 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
           this.y = random(-100, -40);
           this.x = random(0, window.innerWidth);
           this.speed = random(2, 3);
-          this.size = random(30);
+          this.size = random(20, 30);
           this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
           this.element.style.fontSize = this.size + 'px';
           this.element.textContent = this.char;
@@ -322,7 +348,6 @@ Stacja finałowa: 6XPH+CH, Warszawa</em></p>
 
     animate();
 
-    // Reakcja na zmianę rozmiaru okna
     window.addEventListener('resize', () => {
       dinos.forEach(dino => {
         dino.x = random(0, window.innerWidth);
