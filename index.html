@@ -11,18 +11,20 @@
       color: #00ffcc;
       font-family: 'Share Tech Mono', monospace;
       min-height: 100vh;
-      position: relative;
       overflow-x: hidden;
+      position: relative;
     }
     .container {
       max-width: 800px;
-      margin: 120px auto;
+      margin: 120px auto 60px;
       padding: 30px;
       text-align: center;
       background: rgba(0,0,0,0.75);
       border: 2px solid #00ffcc;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,255,204,0.2);
+      position: relative;
+      z-index: 2;
     }
     h2 {
       color: #ff0055;
@@ -35,14 +37,14 @@
       font-weight: bold;
       margin-bottom: 20px;
       font-size: 20px;
+      line-height: 1.3;
     }
     .inputs {
-      margin: 0 auto;
-      max-width: 400px;
+      margin: 0 auto 20px;
+      max-width: 420px;
       display: flex;
       justify-content: center;
       gap: 16px;
-      margin-bottom: 20px;
     }
     .input-group {
       display: flex;
@@ -61,11 +63,24 @@
       outline-offset: -2px;
       border-radius: 6px;
       caret-color: #00ffcc;
+      transition: border-color 0.3s, background-color 0.3s;
     }
     input[type="text"]:focus {
       border-color: #ff0055;
       box-shadow: 0 0 5px #ff0055;
       background-color: #111;
+    }
+    input.correct {
+      border-color: #00ff55 !important;
+      background-color: #002200;
+      color: #00ff55;
+      box-shadow: 0 0 8px #00ff55;
+    }
+    input.incorrect {
+      border-color: #ff0033 !important;
+      background-color: #330000;
+      color: #ff0033;
+      box-shadow: 0 0 8px #ff0033;
     }
     button {
       background: none;
@@ -77,6 +92,8 @@
       margin-top: 10px;
       font-weight: bold;
       text-transform: uppercase;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
     }
     button:hover {
       background-color: #00ffcc;
@@ -101,17 +118,66 @@
       box-shadow: 0 0 10px rgba(0,255,204,0.3);
       font-size: 20px;
       font-weight: bold;
+      text-align: left;
+    }
+
+    /* Tło animacji */
+    #dinoBackground {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-color: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .dino {
+      position: absolute;
+      font-size: 20px;
+      color: #00ffcc;
+      user-select: none;
+      will-change: transform;
+      font-weight: bold;
+      text-shadow:
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .container {
+        margin: 80px 10px 40px;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      .clues {
+        font-size: 16px;
+      }
+      input[type="text"] {
+        width: 30px;
+        height: 36px;
+        font-size: 20px;
+      }
+      button {
+        font-size: 16px;
+        padding: 8px 20px;
+      }
     }
   </style>
 </head>
 <body>
+
+  <div id="dinoBackground"></div>
 
   <div class="container" id="taskContainer">
     <h2>&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
     <div class="clues">
       <p>Hasła:</p>
       <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
-      <p>2. Główne miejsce pracy programisty (4 litery)</p>
+      <p>2. Najpopularniejszy język skryptowy w przeglądarkach (2 litery)</p>
       <p>3. Język znany z sieci i stylowania (3 litery)</p>
     </div>
     <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
@@ -123,13 +189,11 @@
       <div class="input-group">
         <input type="text" maxlength="1" id="c4" autocomplete="off" />
         <input type="text" maxlength="1" id="c5" autocomplete="off" />
-        <input type="text" maxlength="1" id="c6" autocomplete="off" />
-        <input type="text" maxlength="1" id="c7" autocomplete="off" />
       </div>
       <div class="input-group">
+        <input type="text" maxlength="1" id="c6" autocomplete="off" />
+        <input type="text" maxlength="1" id="c7" autocomplete="off" />
         <input type="text" maxlength="1" id="c8" autocomplete="off" />
-        <input type="text" maxlength="1" id="c9" autocomplete="off" />
-        <input type="text" maxlength="1" id="c10" autocomplete="off" />
       </div>
     </div>
     <button onclick="checkCrossword()">SPRAWDŹ</button>
@@ -156,30 +220,31 @@
 
     function checkCrossword() {
       const answer = [
-        'v','p','n',       // vpn
-        'i','d','e','s',  // ides
-        'c','s','s'       // css
+        'v','p','n',  // VPN
+        'j','s',      // JS
+        'c','s','s'   // CSS
       ];
 
-      const userInput = [];
-      for(let i = 1; i <= 10; i++) {
+      let allCorrect = true;
+
+      for(let i = 1; i <= 8; i++) {
         const el = document.getElementById('c'+i);
-        userInput.push(el ? el.value.toLowerCase() : '');
+        if(!el) continue;
+        const val = el.value.toLowerCase();
+        if(val === answer[i-1]) {
+          el.classList.add('correct');
+          el.classList.remove('incorrect');
+        } else {
+          el.classList.add('incorrect');
+          el.classList.remove('correct');
+          allCorrect = false;
+        }
       }
-      // Ważne! W oryginalnym kodzie było 11 inputów, teraz 10 (3+4+3)
-      // Dlatego odpowiedzi są 10 liter, ale CSS ma 3 litery => musimy dodać jeszcze input c11
-      // Poprawiam - dodaję input c11 w HTML i do userInput
-
-      // Jeśli w HTML masz 11 inputów, zmień pętlę na 11
-      // Dodam input c11 poniżej, żeby zgadzało się z answer
-
-      // Sprawdzenie zgodności z answer:
-      const correct = answer.every((letter, i) => userInput[i] === letter);
 
       const result = document.getElementById('result');
       const task = document.getElementById('taskContainer');
 
-      if(correct) {
+      if(allCorrect) {
         task.style.display = 'none';
         result.style.display = 'block';
         result.innerHTML = `
@@ -189,8 +254,8 @@
             <p><em>“Tu cyfry tańczą, kod w powietrzu śpiewa,<br>
 Mózgi pracują, choć noc się nie kończy jeszcze.<br>
 W sercu miasta, gdzie pomysłów lawina,<br>
-            Znajdziesz twórczy dom — może to twoja kraina?”<br><br>
-            Współrzędne: 52.2371°N, 21.0175°E.</em></p>
+Znajdziesz twórczy dom — może to twoja kraina?”<br><br>
+Stacja finałowa: 6XPH+CH, Warszawa</em></p>
           </div>
         `;
       } else {
@@ -204,8 +269,66 @@ W sercu miasta, gdzie pomysłów lawina,<br>
         `;
       }
     }
+
+    // Animacja spadających hacker-symboli w tle
+
+    const dinoBackground = document.getElementById('dinoBackground');
+    const hackerChars = ['?', '#', '$', '%', '&', '@', '!', '*']; // symbole hackerskie
+    const dinos = [];
+    const dinoCount = 100;
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    class Dino {
+      constructor() {
+        this.x = random(0, window.innerWidth);
+        this.y = random(-window.innerHeight, 0);
+        this.speed = random(3, 5);
+        this.size = random(30, 50);
+        this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
+        this.element = document.createElement('div');
+        this.element.classList.add('dino');
+        this.element.style.fontSize = this.size + 'px';
+        this.element.textContent = this.char;
+        this.element.style.left = this.x + 'px';
+        this.element.style.top = this.y + 'px';
+        dinoBackground.appendChild(this.element);
+      }
+      update() {
+        this.y += this.speed;
+        if(this.y > window.innerHeight) {
+          this.y = random(-100, -40);
+          this.x = random(0, window.innerWidth);
+          this.speed = random(2, 3);
+          this.size = random(30);
+          this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
+          this.element.style.fontSize = this.size + 'px';
+          this.element.textContent = this.char;
+        }
+        this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
+      }
+    }
+
+    for(let i=0; i<dinoCount; i++) {
+      dinos.push(new Dino());
+    }
+
+    function animate() {
+      dinos.forEach(dino => dino.update());
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // Reakcja na zmianę rozmiaru okna
+    window.addEventListener('resize', () => {
+      dinos.forEach(dino => {
+        dino.x = random(0, window.innerWidth);
+      });
+    });
   </script>
 
 </body>
 </html>
-
