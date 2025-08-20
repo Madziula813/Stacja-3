@@ -2,379 +2,277 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <title>Stacja 3</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stacja 3</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    html, body {
-      margin: 0; padding: 0; height: 100%;
-      background-color: #0a0a0a;
-      color: #00ffcc;
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-    .container {
-      max-width: 600px;
-      margin: 100px auto 60px;
-      padding: 30px 25px;
-      text-align: center;
-      background: rgba(0,0,0,0.75);
-      border: 2px solid #00ffcc;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,255,204,0.2);
-      position: relative;
-      z-index: 2;
-    }
-    h2 {
-      color: #ff0055;
-      font-size: 28px;
-      margin-bottom: 30px;
-      font-weight: bold;
-      line-height: 1.2;
-    }
-    .clues {
-      text-align: left;
-      font-weight: bold;
-      margin-bottom: 25px;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-    .inputs {
-      margin: 0 auto 25px;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      align-items: flex-start;
-    }
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-    }
-    .clue-number {
-      color: #ff0055;
-      font-weight: bold;
-      font-size: 28px;
-      line-height: 40px;
-      user-select: none;
-      min-width: 32px;
-      text-align: right;
-      display: inline-block;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-    input[type="text"] {
-      width: 48px;
-      height: 48px;
-      font-size: 28px;
-      font-weight: bold;
-      text-align: center;
-      background: #000;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      text-transform: lowercase;
-      outline-offset: -2px;
-      border-radius: 8px;
-      caret-color: #00ffcc;
-      transition: border-color 0.3s, background-color 0.3s;
-      flex-shrink: 0;
-    }
-    input[type="text"]:focus {
-      border-color: #ff0055;
-      box-shadow: 0 0 8px #ff0055;
-      background-color: #111;
-    }
-    input.correct {
-      border-color: #00ff55 !important;
-      background-color: #002200;
-      color: #00ff55;
-      box-shadow: 0 0 10px #00ff55;
-    }
-    input.incorrect {
-      border-color: #ff0033 !important;
-      background-color: #330000;
-      color: #ff0033;
-      box-shadow: 0 0 10px #ff0033;
-    }
-    button {
-      background: none;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      padding: 14px 36px;
-      font-size: 20px;
-      cursor: pointer;
-      margin-top: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: 10px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    button:hover, button:focus {
-      background-color: #00ffcc;
-      color: #000;
-      outline: none;
-    }
-    .error {
-      color: #ff3355;
-      font-size: 20px;
-      margin-top: 28px;
-      animation: blink 1.2s step-start infinite;
-      font-weight: bold;
-      line-height: 1.3;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    .decoded {
-      margin-top: 32px;
-      background-color: rgba(0,255,204,0.07);
-      padding: 22px 28px;
-      border: 1px solid #00ffcc;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,255,204,0.35);
-      font-size: 20px;
-      font-weight: bold;
-      text-align: left;
-      line-height: 1.5;
+    :root {
+      --primary-color: #00ffd5;
+      --accent-color: #a93247;
+      --dark-bg: #0a0a0a;
+      --text-shadow: 0 0 10px var(--primary-color), 0 0 30px var(--primary-color);
     }
 
-    /* Tło animacji */
-    #dinoBackground {
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background: var(--dark-bg);
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--primary-color);
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
       position: fixed;
       inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background-color: #0a0a0a;
-      overflow: hidden;
+      background:
+        radial-gradient(circle at 25% 30%, rgba(255,20,60,0.12), transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(0,255,213,0.12), transparent 50%),
+        linear-gradient(135deg, #0a0a0a, #001f29, #000c17);
+      background-repeat: no-repeat;
+      animation: bgMove 30s linear infinite, dotsFlicker 4s ease-in-out infinite;
+      z-index: 0;
     }
-    .dino {
-      position: absolute;
-      font-size: 22px;
-      color: #00ffcc;
+
+    @keyframes bgMove {
+      0%, 100% { background-position: 20% 30%, 70% 80%, 0 0; }
+      50% { background-position: 22% 28%, 68% 82%, 100% 100%; }
+    }
+
+    @keyframes dotsFlicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.75; }
+    }
+
+    main {
+      position: relative;
+      z-index: 2;
+      width: 90%;
+      max-width: 680px;
+      background: rgba(0, 0, 0, 0.65);
+      border: 2px solid var(--primary-color);
+      border-radius: 16px;
+      padding: 35px 40px;
+      text-align: center;
+      box-shadow:
+        0 0 12px var(--primary-color),
+        0 0 35px var(--primary-color),
+        0 0 70px var(--accent-color);
+      margin: 40px 15px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      letter-spacing: 2px;
+      margin: 0 0 20px;
+      color: var(--accent-color);
+      text-shadow: 0 0 12px var(--accent-color), 0 0 30px var(--accent-color);
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid var(--accent-color);
+      animation:
+        typing 3.2s steps(28, end),
+        blink-caret 0.75s step-end infinite;
       user-select: none;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink-caret {
+      50% { border-color: transparent }
+    }
+
+    p {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 35px;
+      text-shadow: var(--text-shadow);
+      text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    strong {
+      color: var(--accent-color);
+      text-shadow: 0 0 10px var(--accent-color);
+      font-weight: bold;
+    }
+
+    button {
+      cursor: pointer;
+      background: transparent;
+      color: var(--primary-color);
+      border: 3px solid var(--primary-color);
+      padding: 12px 32px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--accent-color);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: var(--primary-color);
+      color: #000;
+      border-color: var(--accent-color);
+      box-shadow:
+        0 0 25px var(--primary-color),
+        0 0 60px var(--accent-color),
+        0 0 90px var(--accent-color);
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .digit {
+      position: fixed;
+      font-size: 22px;
+      color: var(--primary-color);
+      opacity: 0.13;
+      text-shadow: 0 0 6px var(--primary-color), 0 0 12px var(--primary-color);
+      user-select: none;
+      pointer-events: none;
       will-change: transform;
       font-weight: bold;
-      text-shadow:
-        0 0 6px #00ffcc,
-        0 0 12px #00ffcc;
     }
 
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 480px) {
-      .container {
-        margin: 60px 15px 40px;
-        padding: 22px 18px;
-        border-radius: 10px;
+    /* TABLETY */
+    @media (max-width: 768px) {
+      main {
+        padding: 28px 22px;
       }
-      h2 {
-        font-size: 22px;
-        margin-bottom: 24px;
+
+      h1 {
+        font-size: 2.2rem;
       }
-      .clues {
-        font-size: 16px;
-        margin-bottom: 20px;
+
+      p {
+        font-size: 1rem;
       }
-      .inputs {
-        gap: 18px;
-      }
-      .input-group {
-        gap: 8px;
-      }
-      .clue-number {
-        font-size: 24px;
-        min-width: 28px;
-        margin-right: 8px;
-        line-height: 36px;
-      }
-      input[type="text"] {
-        width: 42px;
-        height: 42px;
-        font-size: 24px;
-        border-radius: 6px;
-      }
+
       button {
-        font-size: 18px;
-        padding: 12px 28px;
-        border-radius: 8px;
-      }
-      .decoded {
-        font-size: 18px;
-        padding: 18px 20px;
-      }
-      .error {
-        font-size: 18px;
-        margin-top: 24px;
+        font-size: 1rem;
+        padding: 10px 25px;
       }
     }
 
+    /* TELEFONY */
+    @media (max-width: 480px) {
+      main {
+        padding: 22px 18px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+
+      button {
+        font-size: 0.95rem;
+        padding: 8px 22px;
+      }
+
+      .digit {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <div id="dinoBackground"></div>
-
-  <div class="container" id="taskContainer" role="main" aria-labelledby="mainTitle">
-    <h2 id="mainTitle">&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
-    <div class="clues">
-      <p>Hasła:</p>
-      <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
-      <p>2. Najpopularniejszy język skryptowy w przeglądarkach (2 litery)</p>
-      <p>3. Język znany z sieci i stylowania (3 litery)</p>
-    </div>
-    <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
-      <div class="input-group" role="group" aria-label="Pierwsze hasło, 3 litery">
-        <span class="clue-number" aria-hidden="true">1.</span>
-        <input type="text" maxlength="1" id="c1" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 1" />
-        <input type="text" maxlength="1" id="c2" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 1" />
-        <input type="text" maxlength="1" id="c3" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 1" />
-      </div>
-      <div class="input-group" role="group" aria-label="Drugie hasło, 2 litery">
-        <span class="clue-number" aria-hidden="true">2.</span>
-        <input type="text" maxlength="1" id="c4" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 2" />
-        <input type="text" maxlength="1" id="c5" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 2" />
-      </div>
-      <div class="input-group" role="group" aria-label="Trzecie hasło, 3 litery">
-        <span class="clue-number" aria-hidden="true">3.</span>
-        <input type="text" maxlength="1" id="c6" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 3" />
-        <input type="text" maxlength="1" id="c7" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 3" />
-        <input type="text" maxlength="1" id="c8" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 3" />
-      </div>
-    </div>
-    <button onclick="checkCrossword()" aria-describedby="buttonHelp">SPRAWDŹ</button>
-  </div>
-
-  <div class="container" id="result" style="display:none" aria-live="polite" aria-atomic="true"></div>
+  <main>
+    <h1>&gt;[Stacja 3]</h1>
+    <p>
+      Witaj, <strong>Graczu…</strong><br /><br />
+      Widzę, że udało ci się przejść drugą stację.<br />
+      Ale to był tylko <strong>test</strong> – próbka twojej wytrzymałości.<br /><br />
+      <em>Teraz czeka cię zadanie, które oddziela ciekawskich od <strong>prawdziwych hakerów.</strong></em><br />
+Każdy błąd zostawia cyfrowy ślad, a ktoś – lub coś – obserwuje każdy twój ruch.<br/><br/>
+      🔐 Sprawdź, czy uda ci się złamać kolejną barierę.<br />
+      Jeśli zawiedziesz, gra pochłonie cię w <strong>mrok.</strong><br /><br />
+      <strong>Powodzenia… jeśli jeszcze wierzysz w szczęście.</strong>
+    </p>
+    <button onclick="goTo('stacja3.html')" aria-label="Przejdź do stacji 3">&gt; DALEJ</button>
+  </main>
 
   <script>
-    // Automatyczne przechodzenie do następnego inputu po wpisaniu litery
-    const inputs = document.querySelectorAll('.inputs input[type="text"]');
-    inputs.forEach((input, idx) => {
-      input.addEventListener('input', () => {
-        input.value = input.value.toLowerCase().replace(/[^a-z]/g, '');
-        if (input.value && idx < inputs.length - 1) {
-          inputs[idx + 1].focus();
-        }
-      });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value && idx > 0) {
-          inputs[idx - 1].focus();
-        }
-      });
-    });
-
-    function checkCrossword() {
-      const answer = [
-        'v','p','n',  // VPN
-        'j','s',      // JS
-        'c','s','s'   // CSS
-      ];
-
-      let allCorrect = true;
-
-      for(let i = 1; i <= 8; i++) {
-        const el = document.getElementById('c'+i);
-        if(!el) continue;
-        const val = el.value.toLowerCase();
-        if(val === answer[i-1]) {
-          el.classList.add('correct');
-          el.classList.remove('incorrect');
-        } else {
-          el.classList.add('incorrect');
-          el.classList.remove('correct');
-          allCorrect = false;
-        }
-      }
-
-      const result = document.getElementById('result');
-      const task = document.getElementById('taskContainer');
-
-      if(allCorrect) {
-        task.style.display = 'none';
-        result.style.display = 'block';
-        result.innerHTML = `
-          <div class="decoded">
-            <p>&gt; ✅ Wszystkie odpowiedzi poprawne!</p>
-            <p>&gt; Kod fragmentu: <strong>12</strong></p>
-            <p><em>“Tu cyfry tańczą, kod w powietrzu śpiewa,<br>
-Mózgi pracują, choć noc się nie kończy jeszcze.<br>
-W sercu miasta, gdzie pomysłów lawina,<br>
-Znajdziesz twórczy dom — może to twoja kraina?”<br><br>
-Stacja finałowa: 6XPH+CH, Warszawa</em></p>
-          </div>
-        `;
-      } else {
-        result.style.display = 'block';
-        result.innerHTML = `
-          <div class="error">
-            ███ SYSTEM ERROR ██<br>
-            Błędne odpowiedzi...<br>
-            <button onclick="location.reload()">&gt; SPRÓBUJ PONOWNIE</button>
-          </div>
-        `;
-      }
+    function goTo(page) {
+      const btn = document.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = "⏳ Ładowanie...";
+      setTimeout(() => {
+        window.location.href = page;
+      }, 700);
     }
 
-    // Animacja spadających hacker-symboli w tle
-    const dinoBackground = document.getElementById('dinoBackground');
-    const hackerChars = ['?', '#', '$', '%', '&', '@', '!', '*']; // symbole hackerskie
-    const dinos = [];
-    const dinoCount = 80;
+    const digitsCount = window.innerWidth < 480 ? 0 : 30;
+    const digits = [];
 
-    function random(min, max) {
+    function randomRange(min, max) {
       return Math.random() * (max - min) + min;
     }
 
-    class Dino {
-      constructor() {
-        this.x = random(0, window.innerWidth);
-        this.y = random(-window.innerHeight, 0);
-        this.speed = random(2, 4);
-        this.size = random(24, 36);
-        this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
-        this.element = document.createElement('div');
-        this.element.classList.add('dino');
-        this.element.style.fontSize = this.size + 'px';
-        this.element.textContent = this.char;
-        this.element.style.left = this.x + 'px';
-        this.element.style.top = this.y + 'px';
-        dinoBackground.appendChild(this.element);
+    function createDigit() {
+      const digit = document.createElement('div');
+      digit.classList.add('digit');
+      digit.textContent = Math.floor(Math.random() * 10);
+      document.body.appendChild(digit);
+
+      const size = randomRange(20, 40);
+      digit.style.fontSize = size + 'px';
+
+      return {
+        el: digit,
+        x: randomRange(0, window.innerWidth),
+        y: randomRange(0, window.innerHeight),
+        vx: randomRange(-0.2, 0.2),
+        vy: randomRange(-0.2, 0.2),
+        size: size
+      };
+    }
+
+    function updateDigits() {
+      for (const d of digits) {
+        d.x += d.vx;
+        d.y += d.vy;
+
+        if (d.x < -d.size) d.x = window.innerWidth + d.size;
+        else if (d.x > window.innerWidth + d.size) d.x = -d.size;
+
+        if (d.y < -d.size) d.y = window.innerHeight + d.size;
+        else if (d.y > window.innerHeight + d.size) d.y = -d.size;
+
+        d.el.style.transform = `translate(${d.x}px, ${d.y}px)`;
       }
-      update() {
-        this.y += this.speed;
-        if(this.y > window.innerHeight) {
-          this.y = random(-100, -40);
-          this.x = random(0, window.innerWidth);
-          this.speed = random(2, 4);
-          this.size = random(24, 36);
-          this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
-          this.element.style.fontSize = this.size + 'px';
-          this.element.textContent = this.char;
-        }
-        this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
-      }
+      requestAnimationFrame(updateDigits);
     }
 
-    for(let i=0; i<dinoCount; i++) {
-      dinos.push(new Dino());
+    for (let i = 0; i < digitsCount; i++) {
+      digits.push(createDigit());
     }
-
-    function animate() {
-      dinos.forEach(dino => dino.update());
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      dinos.forEach(dino => {
-        dino.x = random(0, window.innerWidth);
-      });
-    });
+    updateDigits();
   </script>
-
 </body>
 </html>
