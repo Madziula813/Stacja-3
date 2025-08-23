@@ -5,376 +5,168 @@
   <title>Stacja 3</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <style>
-    html, body {
-      margin: 0; padding: 0; height: 100%;
-      background-color: #0a0a0a;
-      color: #00ffcc;
-      font-family: 'Share Tech Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-    .container {
-      max-width: 600px;
-      margin: 100px auto 60px;
-      padding: 30px 25px;
-      text-align: center;
-      background: rgba(0,0,0,0.75);
-      border: 2px solid #00ffcc;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,255,204,0.2);
-      position: relative;
-      z-index: 2;
-    }
-    h2 {
-      color: #ff0055;
-      font-size: 28px;
-      margin-bottom: 30px;
-      font-weight: bold;
-      line-height: 1.2;
-    }
-    .clues {
-      text-align: left;
-      font-weight: bold;
-      margin-bottom: 25px;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-    .inputs {
-      margin: 0 auto 25px;
-      max-width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 22px;
-      align-items: flex-start;
-    }
-    .input-group {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-    }
-    .clue-number {
-      color: #ff0055;
-      font-weight: bold;
-      font-size: 28px;
-      line-height: 40px;
-      user-select: none;
-      min-width: 32px;
-      text-align: right;
-      display: inline-block;
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-    input[type="text"] {
-      width: 48px;
-      height: 48px;
-      font-size: 28px;
-      font-weight: bold;
-      text-align: center;
-      background: #000;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      text-transform: lowercase;
-      outline-offset: -2px;
-      border-radius: 8px;
-      caret-color: #00ffcc;
-      transition: border-color 0.3s, background-color 0.3s;
-      flex-shrink: 0;
-    }
-    input[type="text"]:focus {
-      border-color: #ff0055;
-      box-shadow: 0 0 8px #ff0055;
-      background-color: #111;
-    }
-    input.correct {
-      border-color: #00ff55 !important;
-      background-color: #002200;
-      color: #00ff55;
-      box-shadow: 0 0 10px #00ff55;
-    }
-    input.incorrect {
-      border-color: #ff0033 !important;
-      background-color: #330000;
-      color: #ff0033;
-      box-shadow: 0 0 10px #ff0033;
-    }
-    button {
-      background: none;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      padding: 14px 36px;
-      font-size: 20px;
-      cursor: pointer;
-      margin-top: 12px;
-      font-weight: bold;
-      text-transform: uppercase;
-      border-radius: 10px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    button:hover, button:focus {
-      background-color: #00ffcc;
-      color: #000;
-      outline: none;
-    }
-    .error {
-      color: #ff3355;
-      font-size: 20px;
-      margin-top: 28px;
-      animation: blink 1.2s step-start infinite;
-      font-weight: bold;
-      line-height: 1.3;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    .decoded {
-      margin-top: 32px;
-      background-color: rgba(0,255,204,0.07);
-      padding: 22px 28px;
-      border: 1px solid #00ffcc;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,255,204,0.35);
-      font-size: 20px;
-      font-weight: bold;
-      text-align: left;
-      line-height: 1.5;
-    }
-
-    /* Tło animacji */
-    #dinoBackground {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background-color: #0a0a0a;
-      overflow: hidden;
-    }
-    .dino {
-      position: absolute;
-      font-size: 22px;
-      color: #00ffcc;
-      user-select: none;
-      will-change: transform;
-      font-weight: bold;
-      text-shadow:
-        0 0 6px #00ffcc,
-        0 0 12px #00ffcc;
-    }
-
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 480px) {
-      .container {
-        margin: 60px 15px 40px;
-        padding: 22px 18px;
-        border-radius: 10px;
-      }
-      h2 {
-        font-size: 22px;
-        margin-bottom: 24px;
-      }
-      .clues {
-        font-size: 16px;
-        margin-bottom: 20px;
-      }
-      .inputs {
-        gap: 18px;
-      }
-      .input-group {
-        gap: 8px;
-      }
-      .clue-number {
-        font-size: 24px;
-        min-width: 28px;
-        margin-right: 8px;
-        line-height: 36px;
-      }
-      input[type="text"] {
-        width: 42px;
-        height: 42px;
-        font-size: 24px;
-        border-radius: 6px;
-      }
-      button {
-        font-size: 18px;
-        padding: 12px 28px;
-        border-radius: 8px;
-      }
-      .decoded {
-        font-size: 18px;
-        padding: 18px 20px;
-      }
-      .error {
-        font-size: 18px;
-        margin-top: 24px;
-      }
-    }
-
-  </style>
+<link rel="icon" href="bhl.jpg" type="image/jpeg">
+<link rel="shortcut icon" href="bhl.jpg" type="image/jpeg">
+<style>
+/* --- STYLIZACJA jak w Twoim kodzie --- */
+html, body { margin:0; padding:0; height:100%; background-color:#0a0a0a; color:#00ffcc; font-family:'Share Tech Mono', monospace; min-height:100vh; overflow-x:hidden; position:relative; }
+.container { max-width:600px; margin:100px auto 60px; padding:30px 25px; text-align:center; background:rgba(0,0,0,0.75); border:2px solid #00ffcc; border-radius:12px; box-shadow:0 0 20px rgba(0,255,204,0.2); position:relative; z-index:2; }
+h2 { color:#ff0055; font-size:28px; margin-bottom:30px; font-weight:bold; line-height:1.2; }
+.clues { text-align:left; font-weight:bold; margin-bottom:25px; font-size:18px; line-height:1.4; }
+.inputs { margin:0 auto 25px; max-width:100%; display:flex; flex-direction:column; gap:22px; align-items:flex-start; }
+.input-group { display:flex; align-items:center; gap:12px; width:100%; }
+.clue-number { color:#ff0055; font-weight:bold; font-size:28px; line-height:40px; user-select:none; min-width:32px; text-align:right; display:inline-block; margin-right:10px; flex-shrink:0; }
+input[type="text"] { width:48px; height:48px; font-size:28px; font-weight:bold; text-align:center; background:#000; border:2px solid #00ffcc; color:#00ffcc; text-transform:lowercase; outline-offset:-2px; border-radius:8px; caret-color:#00ffcc; transition:border-color 0.3s, background-color 0.3s; flex-shrink:0; }
+input[type="text"]:focus { border-color:#ff0055; box-shadow:0 0 8px #ff0055; background-color:#111; }
+input.correct { border-color:#00ff55 !important; background-color:#002200; color:#00ff55; box-shadow:0 0 10px #00ff55; }
+input.incorrect { border-color:#ff0033 !important; background-color:#330000; color:#ff0033; box-shadow:0 0 10px #ff0033; }
+button { background:none; border:2px solid #00ffcc; color:#00ffcc; padding:14px 36px; font-size:20px; cursor:pointer; margin-top:12px; font-weight:bold; text-transform:uppercase; border-radius:10px; transition:background-color 0.3s, color 0.3s; }
+button:hover, button:focus { background-color:#00ffcc; color:#000; outline:none; }
+.error { color:#ff3355; font-size:20px; margin-top:28px; animation:blink 1.2s step-start infinite; font-weight:bold; line-height:1.3; }
+@keyframes blink { 50% { opacity:0; } }
+.decoded { margin-top:32px; background-color:rgba(0,255,204,0.07); padding:22px 28px; border:1px solid #00ffcc; border-radius:12px; box-shadow:0 0 12px rgba(0,255,204,0.35); font-size:20px; font-weight:bold; text-align:left; line-height:1.5; }
+#dinoBackground { position:fixed; inset:0; z-index:1; pointer-events:none; background-color:#0a0a0a; overflow:hidden; }
+.dino { position:absolute; font-size:22px; color:#00ffcc; user-select:none; will-change:transform; font-weight:bold; text-shadow:0 0 6px #00ffcc,0 0 12px #00ffcc; }
+@media (max-width:480px) { .container { margin:60px 15px 40px; padding:22px 18px; border-radius:10px; } h2 { font-size:22px; margin-bottom:24px; } .clues { font-size:16px; margin-bottom:20px; } .inputs { gap:18px; } .input-group { gap:8px; } .clue-number { font-size:24px; min-width:28px; margin-right:8px; line-height:36px; } input[type="text"] { width:42px; height:42px; font-size:24px; border-radius:6px; } button { font-size:18px; padding:12px 28px; border-radius:8px; } .decoded { font-size:18px; padding:18px 20px; } .error { font-size:18px; margin-top:24px; } }
+</style>
 </head>
 <body>
 
-  <div id="dinoBackground"></div>
+<div id="dinoBackground"></div>
 
-  <div class="container" id="taskContainer" role="main" aria-labelledby="mainTitle">
-    <h2 id="mainTitle">&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
-    <div class="clues">
-      <p>Hasła:</p>
-      <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
-      <p>2. Najpopularniejszy język skryptowy w przeglądarkach (2 litery)</p>
-      <p>3. Język znany z sieci i stylowania (3 litery)</p>
-    </div>
-    <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
-      <div class="input-group" role="group" aria-label="Pierwsze hasło, 3 litery">
-        <span class="clue-number" aria-hidden="true">1.</span>
-        <input type="text" maxlength="1" id="c1" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 1" />
-        <input type="text" maxlength="1" id="c2" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 1" />
-        <input type="text" maxlength="1" id="c3" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 1" />
-      </div>
-      <div class="input-group" role="group" aria-label="Drugie hasło, 2 litery">
-        <span class="clue-number" aria-hidden="true">2.</span>
-        <input type="text" maxlength="1" id="c4" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 2" />
-        <input type="text" maxlength="1" id="c5" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 2" />
-      </div>
-      <div class="input-group" role="group" aria-label="Trzecie hasło, 3 litery">
-        <span class="clue-number" aria-hidden="true">3.</span>
-        <input type="text" maxlength="1" id="c6" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 3" />
-        <input type="text" maxlength="1" id="c7" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 3" />
-        <input type="text" maxlength="1" id="c8" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 3" />
-      </div>
-    </div>
-    <button onclick="checkCrossword()" aria-describedby="buttonHelp">SPRAWDŹ</button>
+<div class="container" id="taskContainer" role="main" aria-labelledby="mainTitle">
+  <h2 id="mainTitle">&gt; STACJA [3/4] – KRZYŻÓWKA UMYSŁOWA</h2>
+  <div class="clues">
+    <p>Hasła:</p>
+    <p>1. Narzędzie służące do szyfrowania połączenia internetowego (3 litery)</p>
+    <p>2. Najpopularniejszy język skryptowy w przeglądarkach (2 litery)</p>
+    <p>3. Język znany z sieci i stylowania (3 litery)</p>
   </div>
+  <div class="inputs" aria-label="Pole na odpowiedzi krzyżówki">
+    <div class="input-group" role="group" aria-label="Pierwsze hasło, 3 litery">
+      <span class="clue-number" aria-hidden="true">1.</span>
+      <input type="text" maxlength="1" id="c1" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 1" />
+      <input type="text" maxlength="1" id="c2" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 1" />
+      <input type="text" maxlength="1" id="c3" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 1" />
+    </div>
+    <div class="input-group" role="group" aria-label="Drugie hasło, 2 litery">
+      <span class="clue-number" aria-hidden="true">2.</span>
+      <input type="text" maxlength="1" id="c4" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 2" />
+      <input type="text" maxlength="1" id="c5" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 2" />
+    </div>
+    <div class="input-group" role="group" aria-label="Trzecie hasło, 3 litery">
+      <span class="clue-number" aria-hidden="true">3.</span>
+      <input type="text" maxlength="1" id="c6" autocomplete="off" inputmode="text" aria-label="Litera 1 hasła 3" />
+      <input type="text" maxlength="1" id="c7" autocomplete="off" inputmode="text" aria-label="Litera 2 hasła 3" />
+      <input type="text" maxlength="1" id="c8" autocomplete="off" inputmode="text" aria-label="Litera 3 hasła 3" />
+    </div>
+  </div>
+  <button onclick="checkCrossword()" aria-describedby="buttonHelp">SPRAWDŹ</button>
+</div>
 
-  <div class="container" id="result" style="display:none" aria-live="polite" aria-atomic="true"></div>
+<div class="container" id="result" style="display:none" aria-live="polite" aria-atomic="true"></div>
 
-  <script>
-    // Automatyczne przechodzenie do następnego inputu po wpisaniu litery
-    const inputs = document.querySelectorAll('.inputs input[type="text"]');
-    inputs.forEach((input, idx) => {
-      input.addEventListener('input', () => {
-        input.value = input.value.toLowerCase().replace(/[^a-z]/g, '');
-        if (input.value && idx < inputs.length - 1) {
-          inputs[idx + 1].focus();
-        }
-      });
-      input.addEventListener('keydown', (e) => {
-        if (e.key === 'Backspace' && !input.value && idx > 0) {
-          inputs[idx - 1].focus();
-        }
-      });
-    });
+<script>
+const inputs = document.querySelectorAll('.inputs input[type="text"]');
+inputs.forEach((input, idx)=>{
+  input.addEventListener('input',()=>{
+    input.value=input.value.toLowerCase().replace(/[^a-z]/g,'');
+    if(input.value && idx<inputs.length-1){ inputs[idx+1].focus(); }
+  });
+  input.addEventListener('keydown',(e)=>{
+    if(e.key==='Backspace' && !input.value && idx>0){ inputs[idx-1].focus(); }
+  });
+});
 
-    function checkCrossword() {
-      const answer = [
-        'v','p','n',  // VPN
-        'j','s',      // JS
-        'c','s','s'   // CSS
-      ];
+// UKRYTE ODPOWIEDZI w Base64
+const encodedAnswer = 'dnBuanNjc3M='; 
 
-      let allCorrect = true;
+function checkCrossword(){
+  const answer = atob(encodedAnswer).split(''); 
 
-      for(let i = 1; i <= 8; i++) {
-        const el = document.getElementById('c'+i);
-        if(!el) continue;
-        const val = el.value.toLowerCase();
-        if(val === answer[i-1]) {
-          el.classList.add('correct');
-          el.classList.remove('incorrect');
-        } else {
-          el.classList.add('incorrect');
-          el.classList.remove('correct');
-          allCorrect = false;
-        }
-      }
+  let allCorrect = true;
+  for(let i=1;i<=8;i++){
+    const el=document.getElementById('c'+i);
+    if(!el) continue;
+    const val=el.value.toLowerCase();
+    if(val===answer[i-1]){
+      el.classList.add('correct');
+      el.classList.remove('incorrect');
+    } else {
+      el.classList.add('incorrect');
+      el.classList.remove('correct');
+      allCorrect=false;
+    }
+  }
 
-      const result = document.getElementById('result');
-      const task = document.getElementById('taskContainer');
+  const result=document.getElementById('result');
+  const task=document.getElementById('taskContainer');
 
-      if(allCorrect) {
-        task.style.display = 'none';
-        result.style.display = 'block';
-        result.innerHTML = `
-          <div class="decoded">
-            <p>&gt; ✅ Wszystkie odpowiedzi poprawne!</p>
-            <p>&gt; Kod fragmentu: <strong>12</strong></p>
-            <p><em>“Tu cyfry tańczą, kod w powietrzu śpiewa,<br>
+  if(allCorrect){
+    task.style.display='none';
+    result.style.display='block';
+    result.innerHTML=`
+      <div class="decoded">
+        <p>&gt; ✅ Wszystkie odpowiedzi poprawne!</p>
+        <p>&gt; Kod fragmentu: <strong>12</strong></p>
+        <p><em>“Tu cyfry tańczą, kod w powietrzu śpiewa,<br>
 Mózgi pracują, choć noc się nie kończy jeszcze.<br>
 W sercu miasta, gdzie pomysłów lawina,<br>
 Znajdziesz twórczy dom — może to twoja kraina?”<br><br>
 Stacja finałowa: 6XPH+CH, Warszawa</em></p>
-          </div>
-        `;
-      } else {
-        result.style.display = 'block';
-        result.innerHTML = `
-          <div class="error">
-            ███ SYSTEM ERROR ██<br>
-            Błędne odpowiedzi...<br>
-            <button onclick="location.reload()">&gt; SPRÓBUJ PONOWNIE</button>
-          </div>
-        `;
-      }
+      </div>
+    `;
+  } else {
+    result.style.display='block';
+    result.innerHTML=`
+      <div class="error">
+        ███ SYSTEM ERROR ██<br>
+        Błędne odpowiedzi...<br>
+        <button onclick="location.reload()">&gt; SPRÓBUJ PONOWNIE</button>
+      </div>
+    `;
+  }
+}
+
+// ANIMACJA SYMBOLI W TLE
+const dinoBackground=document.getElementById('dinoBackground');
+const hackerChars=['?','#','$','%','&','@','!','*'];
+const dinos=[]; const dinoCount=80;
+function random(min,max){return Math.random()*(max-min)+min;}
+class Dino{
+  constructor(){
+    this.x=random(0,window.innerWidth);
+    this.y=random(-window.innerHeight,0);
+    this.speed=random(2,4);
+    this.size=random(24,36);
+    this.char=hackerChars[Math.floor(Math.random()*hackerChars.length)];
+    this.element=document.createElement('div');
+    this.element.classList.add('dino');
+    this.element.style.fontSize=this.size+'px';
+    this.element.textContent=this.char;
+    this.element.style.left=this.x+'px';
+    this.element.style.top=this.y+'px';
+    dinoBackground.appendChild(this.element);
+  }
+  update(){
+    this.y+=this.speed;
+    if(this.y>window.innerHeight){
+      this.y=random(-100,-40);
+      this.x=random(0,window.innerWidth);
+      this.speed=random(2,4);
+      this.size=random(24,36);
+      this.char=hackerChars[Math.floor(Math.random()*hackerChars.length)];
+      this.element.style.fontSize=this.size+'px';
+      this.element.textContent=this.char;
     }
-
-    // Animacja spadających hacker-symboli w tle
-    const dinoBackground = document.getElementById('dinoBackground');
-    const hackerChars = ['?', '#', '$', '%', '&', '@', '!', '*']; // symbole hackerskie
-    const dinos = [];
-    const dinoCount = 80;
-
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    class Dino {
-      constructor() {
-        this.x = random(0, window.innerWidth);
-        this.y = random(-window.innerHeight, 0);
-        this.speed = random(2, 4);
-        this.size = random(24, 36);
-        this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
-        this.element = document.createElement('div');
-        this.element.classList.add('dino');
-        this.element.style.fontSize = this.size + 'px';
-        this.element.textContent = this.char;
-        this.element.style.left = this.x + 'px';
-        this.element.style.top = this.y + 'px';
-        dinoBackground.appendChild(this.element);
-      }
-      update() {
-        this.y += this.speed;
-        if(this.y > window.innerHeight) {
-          this.y = random(-100, -40);
-          this.x = random(0, window.innerWidth);
-          this.speed = random(2, 4);
-          this.size = random(24, 36);
-          this.char = hackerChars[Math.floor(Math.random() * hackerChars.length)];
-          this.element.style.fontSize = this.size + 'px';
-          this.element.textContent = this.char;
-        }
-        this.element.style.transform = `translate(${this.x}px, ${this.y}px)`;
-      }
-    }
-
-    for(let i=0; i<dinoCount; i++) {
-      dinos.push(new Dino());
-    }
-
-    function animate() {
-      dinos.forEach(dino => dino.update());
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      dinos.forEach(dino => {
-        dino.x = random(0, window.innerWidth);
-      });
-    });
-  </script>
+    this.element.style.transform=`translate(${this.x}px, ${this.y}px)`;
+  }
+}
+for(let i=0;i<dinoCount;i++){ dinos.push(new Dino()); }
+function animate(){ dinos.forEach(dino=>dino.update()); requestAnimationFrame(animate);}
+animate();
+window.addEventListener('resize',()=>{ dinos.forEach(dino=>{ dino.x=random(0,window.innerWidth); }); });
+</script>
 
 </body>
 </html>
